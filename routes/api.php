@@ -14,6 +14,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+//protected api with tokens
+Route::group(['middleware'=>['auth:sanctum']],function(){
+    Route::get('/products/search/{name}', [ProductController::class,'search']);
+    Route::post('/logout', [AuthController::class,'logout']);
+    Route::delete('/delete/{id}', [ProductController::class,'destroy']);
+    Route::put('/update/{id}', [ProductController::class,'update']);
+    Route::post('/create', [ProductController::class,'store']);
+});
+// unprotected
+Route::get('/products', [ProductController::class,'index']);
+Route::post('/register', [AuthController::class,'register']);
+Route::post('/login', [AuthController::class,'login']);
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
