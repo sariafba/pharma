@@ -13,16 +13,14 @@ return new class extends Migration
     {
         Schema::create('favorit_medicines', function (Blueprint $table) {
             $table->id();
-            $table->id();
-            $table->foreignId('pharmacist_id')
-                ->constrained()
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
+            $table->foreignId('Pharmacist_id')
+                  ->constrained()
+                  ->cascadeOnDelete()
+                  ->cascadeOnUpdate();
             $table->foreignId('medicine_id')
-                ->constrained()
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
-            $table->timestamps();
+                  ->constrained()
+                  ->cascadeOnDelete()
+                  ->cascadeOnUpdate();
             $table->timestamps();
         });
     }

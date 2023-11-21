@@ -16,9 +16,9 @@ return new class extends Migration
             $table->String('status');
             $table->boolean('payment');
             $table->foreignId('pharmacist_id')
-                ->constrained()
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
+                  ->constrained()
+                  ->cascadeOnDelete()
+                  ->cascadeOnUpdate();
             $table->timestamps();
         });
     }

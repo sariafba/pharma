@@ -2,7 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\MedicineController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,16 +18,16 @@ use Illuminate\Support\Facades\Route;
 
 //protected api with tokens
 Route::group(['middleware'=>['auth:sanctum']],function(){
-    Route::get('/products/search/{name}', [ProductController::class,'search']);
-    Route::post('/logout', [AuthController::class,'logout']);
-    Route::delete('/delete/{id}', [ProductController::class,'destroy']);
-    Route::put('/update/{id}', [ProductController::class,'update']);
-    Route::post('/create', [ProductController::class,'store']);
+    Route::get('/products/search/{name}', [MedicineController::class,'search']);
+    Route::post('/logout', [UserController::class,'logout']);
+    Route::delete('/delete/{id}', [MedicineController::class,'destroy']);
+    Route::put('/update/{id}', [MedicineController::class,'update']);
+    Route::post('/create', [MedicineController::class,'store']);
 });
 // unprotected
-Route::get('/products', [ProductController::class,'index']);
-Route::post('/register', [AuthController::class,'register']);
-Route::post('/login', [AuthController::class,'login']);
+Route::get('/products', [MedicineController::class,'index']);
+Route::post('/register', [USerController::class,'register']);
+Route::post('/login', [UserController::class,'login']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
