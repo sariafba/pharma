@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\StatusMedicine;
 use App\Http\Requests\StoreStatusMedicineRequest;
 use App\Http\Requests\UpdateStatusMedicineRequest;
@@ -15,6 +16,7 @@ class StatusMedicineController extends Controller
     public function index()
     {
         return StatusMedicine::all();
+//        return StatusMedicine::sum('quantity');
     }
 
     /**

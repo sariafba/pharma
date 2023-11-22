@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('status_medicines', function (Blueprint $table) {
             $table->id();
-            $table->String('quantity');
-            $table->integer('expiration_date');
+            $table->integer('quantity');
+            $table->date('expiration_date');
             $table->foreignId('medicine_id')
                 ->constrained()
                 ->cascadeOnUpdate()
