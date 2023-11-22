@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Medicine;
 use App\Http\Requests\StoreMedicineRequest;
 use App\Http\Requests\UpdateMedicineRequest;
+use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Validator;
 
 class MedicineController extends Controller
+
 {
+    use Apitrait;
+
     /**
      * Display a listing of the resource.
      */
@@ -29,16 +36,23 @@ class MedicineController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'commercial_name' => 'required',
             'scientific_name' => 'required',
             'manufacture_company' => 'required',
             'price' => 'required'
-            // 'description'=> 'required'
+
         ]);
+        if ($validator->fails()) {
+            return $this->apiResponse(null, $validator->errors(), 400);
+        }
+        $medicine = Medicine::create($request->all());
 
+        if ($medicine) {
+            return $this->apiResponse($medicine, 'the category inserted', 201);
+        }
 
-        return Medicine::create($request->all());
+        return $this->apiResponse(null, 'the category didn\'t created', 400);
     }
 
     /**
@@ -60,59 +74,55 @@ class MedicineController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+
+    public function update(Request $request, $medicine_id)
     {
-
-        $medicine = Medicine::find($id);
-        if ($medicine !== null) {
-
-            $medicine->update($request->all());
-            return response([
-
-                'massage' => 'updated',
-                'medicine' => $medicine], 201);
-        } else {
-            return response([
-
-                'message' => 'not found'], 401);
+        $validator = Validator::make($request->all(), [
+            'scientific_name' => 'required|string|max:25',
+            'category_id' => 'req     uired',
+            'trade_name' => 'required|string|max:25',
+            'company' => 'required|string|max:25',
+            'price' => 'required|max:25'
+        ]);
+        if ($validator->fails()) {
+            return $this->apiResponse(null, $validator->errors(), 400);
+        }
+        $medicine = Medicine::find($medicine_id);
+        if (!$medicine) {
+            return $this->apiResponse($medicine, 'the post not found', 404);
+        }
+        $medicine->update($request->all());
+        if ($medicine) {
+            return $this->apiResponse($medicine, 'the post updated', 201);
         }
 
-        return $medicine;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, string $id)
+
+    public function destroy($id)
     {
         $medicine = Medicine::find($id);
-        if ($medicine !== null && $medicine->phone == auth()->user()->phone) {
-
-            $medicine->delete();
-
-            return response([
-
-                'message' => 'deleted'], 201);
-        } else {
-            return response([
-
-                'message' => 'not found'], 401);
+        if (!$medicine) {
+            return $this->apiResponse($medicine, 'the medicin not found', 404);
         }
-
+        $medicine->delete($id);
+        if ($medicine) {
+            return $this->apiResponse(null, 'the category deleted', 200);
+        }
     }
 
     public function search($name)
 
     {
-        $result1 = Medicine::Where('commercial_name', 'like', '%' . $name . '%')
+        $medicine = Medicine::Where('commercial_name', 'like', '%' . $name . '%')
             ->orwhere('scientific_name', 'like', '%' . $name . '%')
             ->get();
-        if ($result1) {
-            return $result1;}
-
-        else {
-            return response([
-                'message' => 'not found'], 404);
+        if ($medicine) {
+            return $this->apiResponse($medicine, 'here ur search', 200);
         }
+
     }
 }
