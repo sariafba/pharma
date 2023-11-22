@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string( 'commercial_name');
             $table->string('scientific_name');
             $table->String('manufacture_company');
+            $table->integer('quantity')->default(0);
             $table->decimal('price');
             $table->foreignId('category_id')
                 ->constrained()
