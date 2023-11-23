@@ -7,7 +7,6 @@ use App\Models\Medicine;
 use App\Http\Requests\StoreMedicineRequest;
 use App\Http\Requests\UpdateMedicineRequest;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Validator;
 
 class MedicineController extends Controller
@@ -49,10 +48,10 @@ class MedicineController extends Controller
         $medicine = Medicine::create($request->all());
 
         if ($medicine) {
-            return $this->apiResponse($medicine, 'the category inserted', 201);
+            return $this->apiResponse($medicine, 'the medicine inserted', 201);
         }
 
-        return $this->apiResponse(null, 'the category didn\'t created', 400);
+        return $this->apiResponse(null, 'the medicine didn\'t created', 401);
     }
 
     /**
@@ -79,7 +78,7 @@ class MedicineController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'scientific_name' => 'required|string|max:25',
-            'category_id' => 'req     uired',
+            'category_id' => 'required',
             'trade_name' => 'required|string|max:25',
             'company' => 'required|string|max:25',
             'price' => 'required|max:25'
@@ -106,11 +105,11 @@ class MedicineController extends Controller
     {
         $medicine = Medicine::find($id);
         if (!$medicine) {
-            return $this->apiResponse($medicine, 'the medicin not found', 404);
+            return $this->apiResponse($medicine, 'the medicine not found', 404);
         }
         $medicine->delete($id);
         if ($medicine) {
-            return $this->apiResponse(null, 'the category deleted', 200);
+            return $this->apiResponse(null, 'the medicine deleted', 200);
         }
     }
 

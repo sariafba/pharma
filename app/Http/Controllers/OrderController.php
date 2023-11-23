@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use http\Env\Request;
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
@@ -13,17 +15,23 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        return Order::all();
     }
-
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
-    }
+        $validator = Validator::make($request->all(), [
+            'required_quantity' => 'required']);
 
+
+        if ($validator->fails()) {
+            return $this->apiResponse(null, $validator->errors(), 400);
+        }
+
+
+    }
     /**
      * Store a newly created resource in storage.
      */

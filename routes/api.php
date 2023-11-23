@@ -1,10 +1,12 @@
 <?php
 
-use App\Http\Controllers\StatusMedicineController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\StatusMedicineController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,16 +19,6 @@ use App\Http\Controllers\UserController;
 */
 
 
-//protected api with tokens
-Route::group(['middleware'=>['auth:sanctum']],function(){
-    Route::get('/medicines/search/{name}', [MedicineController::class,'search']);
-    Route::post('/logout', [UserController::class,'logout']);
-    Route::delete('/delete/{id}', [MedicineController::class,'destroy']);
-    Route::put('/update/{id}', [MedicineController::class,'update']);
-    Route::post('/create', [MedicineController::class,'store']);
-});
-// unprotected
-Route::get('/medicines', [MedicineController::class,'index']);
 
 
 // unprotected
@@ -45,8 +37,23 @@ Route::controller(MedicineController::class)->prefix('medicine')
         Route::post('/create', 'store');
 });
 
+//category
+Route::controller(CategoryController::class)->prefix('category')
+    ->group(function(){
+        Route::get('/','index');
+        Route::put('/update/{id}', 'update');
+        Route::delete('/delete/{id}', 'destroy');
+    });
 
+Route::controller(StatusMedicineController::class)->prefix('status_medicine')
+    ->group(function() {
+        Route::get('/', 'index');
+        Route::put('/update/{id}', 'update');
+
+
+    });
 //test
+
 Route::get('test', [StatusMedicineController::class, 'index']);
 
 

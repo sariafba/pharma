@@ -5,36 +5,44 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Apitrait;
 
 class UserController extends Controller
 {
+    use Apitrait;
     //create new account
 
-    public function register( Request $request){
-
-        $fields = $request->validate([
-            'name'=> 'required|string',
-            'phone'=> 'required|unique:users,phone',
-            'password'=> 'required'
-
+    public function register(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'phone' => 'required|unique:users,phone',
+            'password' => 'required',
+        ], [
+            'phone.unique' => ['code' => 'ERR006', 'message' => 'This phone is already in use.'],
         ]);
+
+        if ($validator->fails()) {
+            return $this->apiResponse(null, $validator->getMessageBag(), 400);
+        }
 
         $user = User::create([
-            'name'=> $fields['name'],
-            'phone'=> $fields['phone'],
-            'password'=>bcrypt($fields['password'])
+            'name' => $request->input('name'),
+            'phone' => $request->input('phone'),
+            'password' => bcrypt($request->input('password')),
         ]);
 
-
         $token = $user->createToken('myapp-token')->plainTextToken;
+
         $response = [
-            'user'=>$user,
-            'token'=>$token
+            'user' => $user,
+            'token' => $token,
         ];
 
-
-        return response ($response,201);
+        return response($response, 201);
     }
+
 
     //logout and delete token
 
