@@ -1,12 +1,13 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PharmacistController;
+use App\Http\Controllers\StatusMedicineController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\StatusMedicineController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,6 +18,8 @@ use App\Http\Controllers\StatusMedicineController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+
 
 
 
@@ -44,6 +47,18 @@ Route::controller(CategoryController::class)->prefix('category')
         Route::put('/update/{id}', 'update');
         Route::delete('/delete/{id}', 'destroy');
     });
+//pharmacist
+Route::controller(PharmacistController::class)->prefix('pharmacist')
+    ->group(function (){
+        Route::get('/', 'index');
+        Route::get('/{id}', 'show');
+        Route::get('/search/{name}', 'search');
+        Route::delete('/delete/{id}', 'destroy');
+        Route::put('/update/{id}', 'update');
+        Route::post('/create', 'store');
+    });
+
+
 
 Route::controller(StatusMedicineController::class)->prefix('status_medicine')
     ->group(function() {

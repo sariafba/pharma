@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\Medicine;
 use App\Models\StatusMedicine;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,9 +16,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-                CategorySeeder::class
-            ]);
 
         // \App\Models\User::factory(10)->create();
 
@@ -25,10 +23,23 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        Category::factory(5)->create();
+
+        //setting admin in database
+        User::create([
+            'name' => 'admin',
+            'phone' => "732002",
+            'password' => bcrypt('password'),
+            'role' => 1
+        ]);
+
+        $this->call([
+            CategorySeeder::class
+        ]);
+
         Medicine::factory(5)->create([
             'category_id' => 1
         ]);
+
         StatusMedicine::factory(2)->create([
             'medicine_id' =>1
         ]);

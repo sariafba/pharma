@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pharmacist;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -32,6 +33,11 @@ class UserController extends Controller
             'phone' => $request->input('phone'),
             'password' => bcrypt($request->input('password')),
         ]);
+
+        Pharmacist::create([
+            'user_id' => $user->id
+        ]);
+
 
         $token = $user->createToken('myapp-token')->plainTextToken;
 

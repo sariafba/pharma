@@ -13,15 +13,15 @@ class PharmacistController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public static function create($id)
     {
-        //
+
     }
 
     /**
@@ -35,9 +35,10 @@ class PharmacistController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Pharmacist $pharmacist)
+    public function show($id)
     {
-        //
+//        dd(Pharmacist::find($id)->user());
+        return Pharmacist::find($id);
     }
 
     /**

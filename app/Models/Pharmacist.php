@@ -11,7 +11,24 @@ class Pharmacist extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $guarded = [];
 
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
+    protected $with = ['user'];
 
     public function user(): BelongsTo
     {
@@ -32,6 +49,5 @@ class Pharmacist extends Model
     {
         return $this->hasmany(StatusOrder::class);
     }
-
 
 }
