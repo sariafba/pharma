@@ -10,6 +10,8 @@ class StatusMedicine extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function medicine(): BelongsTo
     {
         return $this->belongsTo(Medicine::class);
