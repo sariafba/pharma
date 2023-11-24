@@ -18,7 +18,6 @@ class StatusMedicineFactory extends Factory
     public function definition(): array
     {
         return [
-            'medicine_id' => Medicine::factory(),
             'expiration_date' => fake()->date(),
             'quantity' => fake()->numberBetween(0, 1000)
         ];

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\PharmacistController;
 use App\Http\Controllers\StatusMedicineController;
 
@@ -67,6 +68,21 @@ Route::controller(StatusMedicineController::class)->prefix('status_medicine')
 
 
     });
+
+
+//Owner
+Route::controller(OwnerController::class)->prefix('owner')
+    ->group(function() {
+        Route::post('/login', 'login');
+        Route::post('/create', 'create');
+
+
+    });
+
+
+
+
+
 //test
 
 Route::get('test', [StatusMedicineController::class, 'index']);

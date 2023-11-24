@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('medicines', function (Blueprint $table) {
             $table->id();
-            $table->string( 'commercial_name');
+            $table->string( 'commercial_name')->unique();
             $table->string('scientific_name');
             $table->String('manufacture_company');
             $table->integer('quantity')->default(0);
