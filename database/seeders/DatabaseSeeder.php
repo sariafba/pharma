@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
             'category_id' => 1
         ]);
 
-        StatusMedicine::factory(2)->create([
+        StatusMedicine::factory(5)->create([
             'medicine_id' =>1
         ]);
     }

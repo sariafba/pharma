@@ -11,22 +11,19 @@ use App\Http\Controllers\Apitrait;
 
 class UserController extends Controller
 {
-    use Apitrait;
+   use Apitrait;
+
     //create new account
 
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'name' => 'required|string',
             'phone' => 'required|unique:users,phone',
-            'password' => 'required',
-        ], [
-            'phone.unique' => ['code' => 'ERR006', 'message' => 'This phone is already in use.'],
+            'password' => 'required|confirmed',
+        ],
+            ['phone.unique' => ['code' => 'ERR006', 'message' => 'This phone is already in use.'],
         ]);
-
-        if ($validator->fails()) {
-            return $this->apiResponse(null, $validator->getMessageBag(), 400);
-        }
 
         $user = User::create([
             'name' => $request->input('name'),
@@ -38,15 +35,12 @@ class UserController extends Controller
             'user_id' => $user->id
         ]);
 
-
         $token = $user->createToken('myapp-token')->plainTextToken;
-
         $response = [
             'user' => $user,
             'token' => $token,
         ];
-
-        return response($response, 201);
+        return $this->apiResponse($response, 'register successfully',201);
     }
 
 
@@ -55,39 +49,33 @@ class UserController extends Controller
     public function logout( Request $request){
         auth()->user()->tokens()->delete();
 
-        return [
-            'message'=> ' logout '
-        ];
+        return $this->apiResponse(null,'logout successfully',200);
     }
 
     //login
 
 
     public function login( Request $request){
-        $fields = $request->validate([
+         $request->validate([
             'phone'=> 'required',
             'password'=> 'required'
         ]);
 
         // check phone and password
 
-        $user = User::where('phone',$fields['phone'])->first();
+        $user = User::where('phone', $request->input('phone'),)->first();
 
         if (!$user ){
 
-            return response([
+            return $this->apiResponse(null,'Wrong phone number',401);
 
-                'message'=>'Wrong phone number'],401);
-
-        }
-
-        if ( !Hash::check ($fields['password'],$user->password)){
-            return response([
-
-                'message'=>'Wrong password'],401);
 
         }
 
+        if ( !Hash::check ($request->input('password'),$user->password)){
+
+            return $this->apiResponse(null,'Wrong password',401);
+        }
 
         $token = $user->createToken('myapp-token')->plainTextToken;
         $response = [
@@ -95,6 +83,6 @@ class UserController extends Controller
             'token'=>$token
         ];
 
-        return response ($response,201);
+        return $this->apiResponse($response,'login successfully',200);
     }
 }

@@ -60,8 +60,18 @@ class MedicineController extends Controller
     public function show(string $id)
     {
         return Medicine::find($id);
+
     }
 
+    public function show_category ($category_id)
+    {
+        $medicine=Medicine::Where('category_id',$category_id)->get()->except(Category::class);
+        if ($medicine) {
+            return $this->apiResponse($medicine, 'the medicine inserted' );
+        }
+
+        return $this->apiResponse(null, 'the medicine didn\'t created');
+    }
     /**
      * Show the form for editing the specified resource.
      */

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use App\Models\Medicine;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -32,21 +33,15 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name'=>'required|unique'
-       ]);
+     $request->validate([  'name'=>'required|unique']);
 
-        if ($validator->fails()) {
-            return $this->apiResponse(null, $validator->errors(), 400);
-        }
+       $category= Category::create($request->only('name'));
 
-
-       $category= Category::create($request->all());
         if ($category){
-            return $this->apiResponse($category,'created',200);
+            return $this->apiResponse($category,'created');
         }
 
-        return $this->apiResponse(null,'not created',400);
+        return $this->apiResponse(null,'not created');
     }
 
     /**
@@ -55,7 +50,7 @@ class CategoryController extends Controller
     public function show($id)
     {
 
-//        dd( Category::find(1));
+
     }
 
     /**
@@ -70,19 +65,18 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, String $category_id)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required'
-        ]);
-        if ($validator->fails()) {
-            return $this->apiResponse(null, $validator->errors(), 400);
-        }
+         $request->validate([ 'name' => 'required']);
+
         $category = Category::find($category_id);
+
         if (!$category) {
-            return $this->apiResponse($category, 'the post not found', 404);
+            return $this->apiResponse($category, 'the post not found' );
         }
-        $category->update($request->all());
+
+        $category->update($request->only('name'));
+
         if ($category) {
-            return $this->apiResponse($category, 'the post updated', 201);
+            return $this->apiResponse($category, 'the post updated' );
         }
     }
         /**
@@ -92,6 +86,7 @@ class CategoryController extends Controller
         public function destroy($id)
     {
         $category = Category::find($id);
+
         if (!$category) {
             return $this->apiResponse($category, 'the category not found', 404);
         }
