@@ -12,7 +12,7 @@ class Pharmacist extends Model
     use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are not mass assignable.
      *
      * @var array<int, string>
      */
@@ -28,8 +28,7 @@ class Pharmacist extends Model
         'updated_at'
     ];
 
-    protected $with = ['user'];
-
+    //relations methods
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
