@@ -35,17 +35,20 @@ class MedicineController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'commercial_name' => 'required',
             'scientific_name' => 'required',
             'manufacture_company' => 'required',
-            'price' => 'required'
+            'price' => 'required']);
 
+
+        $medicine = Medicine::create([
+            'commercial_name' => $request->input('commercial_name'),
+            'scientific_name' => $request->input('scientific_name'),
+            'manufacture_company' => $request->input('manufacture_company'),
+            'price' => $request->input('price'),
+            'category_id' => $request->input('category_id')
         ]);
-        if ($validator->fails()) {
-            return $this->apiResponse(null, $validator->errors(), 400);
-        }
-        $medicine = Medicine::create($request->all());
 
         if ($medicine) {
             return $this->apiResponse($medicine, 'the medicine inserted', 201);
@@ -63,15 +66,6 @@ class MedicineController extends Controller
 
     }
 
-    public function show_category ($category_id)
-    {
-        $medicine=Medicine::Where('category_id',$category_id)->get()->except(Category::class);
-        if ($medicine) {
-            return $this->apiResponse($medicine, 'the medicine inserted' );
-        }
-
-        return $this->apiResponse(null, 'the medicine didn\'t created');
-    }
     /**
      * Show the form for editing the specified resource.
      */
@@ -86,22 +80,31 @@ class MedicineController extends Controller
 
     public function update(Request $request, $medicine_id)
     {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'scientific_name' => 'required|string|max:25',
             'category_id' => 'required',
             'trade_name' => 'required|string|max:25',
             'company' => 'required|string|max:25',
             'price' => 'required|max:25'
         ]);
-        if ($validator->fails()) {
-            return $this->apiResponse(null, $validator->errors(), 400);
-        }
+
         $medicine = Medicine::find($medicine_id);
         if (!$medicine) {
+
             return $this->apiResponse($medicine, 'the post not found', 404);
         }
-        $medicine->update($request->all());
-        if ($medicine) {
+
+        $medicine = Medicine::update([
+            'commercial_name' => $request->input('commercial_name'),
+            'scientific_name' => $request->input('scientific_name'),
+            'manufacture_company' => $request->input('manufacture_company'),
+            'price' => $request->input('price'),
+            'category_id' => $request->input('category_id')
+        ]) ;
+
+        if ($medicine)
+        {
+
             return $this->apiResponse($medicine, 'the post updated', 201);
         }
 

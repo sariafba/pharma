@@ -33,9 +33,14 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-     $request->validate([  'name'=>'required|unique']);
+     $request->validate([
+         'name'=>'required|unique:categories,name'
+     ]);
 
-       $category= Category::create($request->only('name'));
+       $category= Category::create([
+
+           'name' => $request->input('name')
+       ]);
 
         if ($category){
             return $this->apiResponse($category,'created');
@@ -47,9 +52,31 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
+
+    public function show_category($category_id)
+    {
+
+        $category = Category::with('medicines')->find($category_id);
+
+        if (!$category) {
+            return $this->apiResponse(null, 'Category not found.');
+        }
+
+        $medicines = $category->medicines;
+        $categoryName = $category->name;
+
+        $data = [
+            'category' => $categoryName,
+            'medicines' => $medicines,
+        ];
+
+        return $this->apiResponse($data, 'Medicines for the given category.');
+    }
+
     public function show($id)
     {
 
+    return Category::find($id);
 
     }
 
@@ -65,7 +92,7 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, String $category_id)
     {
-         $request->validate([ 'name' => 'required']);
+         $request->validate([ 'name' => 'required|']);
 
         $category = Category::find($category_id);
 
@@ -73,7 +100,7 @@ class CategoryController extends Controller
             return $this->apiResponse($category, 'the post not found' );
         }
 
-        $category->update($request->only('name'));
+        $category->update($request->input('name'));
 
         if ($category) {
             return $this->apiResponse($category, 'the post updated' );

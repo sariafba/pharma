@@ -32,20 +32,21 @@ class StatusMedicineController extends Controller
      */
     public function store(StoreStatusMedicineRequest $request)
     {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'quantity'=>'required',
             'Expiration_date'=>'required']);
-        if ($validator->fails()) {
-            return $this->apiResponse(null, $validator->errors(), 400);
-    }
 
-        $status_medicine = StatusMedicine::create($request->all());
+        $statusMedicine= StatusMedicine::create([
+            'quantity' => $request->only('quantity'),
+            'Expiration_date' => $request->only('required'),
 
-        if ($status_medicine) {
-            return $this->apiResponse( 'the status_medicine  defined successfully', 201);
+        ]) ;
+
+        if ($statusMedicine) {
+            return $this->apiResponse( 'the status_medicine  defined successfully');
         }
 
-        return $this->apiResponse(null, 'the status_medicine not defined successfully', 400);
+        return $this->apiResponse(null, 'the status_medicine not defined successfully');
     }
 
 
@@ -70,22 +71,25 @@ class StatusMedicineController extends Controller
      */
     public function update(UpdateStatusMedicineRequest $request, StatusMedicine $statusMedicine)
     {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'quantity'=>'required',
-            'Expiration_date'=>'required'
+            'Expiration_date'=>'required']);
 
-        ]);
 
-        if ($validator->fails()) {
-            return $this->apiResponse(null, $validator->errors(), 400);
-        }
+
         $statusMedicine = StatusMedicine::find($statusMedicine);
         if (!$statusMedicine) {
-            return $this->apiResponse($statusMedicine, 'the post not found', 404);
+            return $this->apiResponse($statusMedicine, 'the post not found');
         }
-        $statusMedicine->update($request->all());
+
+        $statusMedicine= StatusMedicine::update([
+            'quantity' => $request->only('quantity'),
+            'Expiration_date' => $request->only('required'),
+
+        ]) ;
+
         if ($statusMedicine) {
-            return $this->apiResponse($statusMedicine, 'the post updated', 201);
+            return $this->apiResponse($statusMedicine, 'the post updated');
         }
     }
 

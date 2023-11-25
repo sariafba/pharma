@@ -13,7 +13,7 @@ class Medicine extends Model
 
     protected $guarded = [];
 
-    protected $with = ['category', 'statusMedicines'];
+    protected $with = [ 'statusMedicines'];
 
 
     public function category(): BelongsTo

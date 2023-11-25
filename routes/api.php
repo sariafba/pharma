@@ -31,7 +31,7 @@ Route::controller(MedicineController::class)->prefix('medicine')
         Route::delete('/delete/{id}', 'destroy');
         Route::put('/update/{id}', 'update');
         Route::post('/create', 'store');
-        Route::get('/{id}', 'show_category');
+        Route::get('/{id}', 'showCategoryMedicines');
 
 });
 
@@ -39,8 +39,11 @@ Route::controller(MedicineController::class)->prefix('medicine')
 Route::controller(CategoryController::class)->prefix('category')
     ->group(function(){
         Route::get('/','index');
+        Route::get('/{id}', 'show');
+        Route::post('/create', 'store');
         Route::put('/update/{id}', 'update');
         Route::delete('/delete/{id}', 'destroy');
+        Route::get('/{id}', 'show_category');
     });
 //pharmacist
 Route::controller(PharmacistController::class)->prefix('pharmacist')

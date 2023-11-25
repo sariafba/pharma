@@ -21,8 +21,8 @@ class UserController extends Controller
             'name' => 'required|string',
             'phone' => 'required|unique:users,phone',
             'password' => 'required|confirmed',
-        ],
-            ['phone.unique' => ['code' => 'ERR006', 'message' => 'This phone is already in use.'],
+        //],
+           // ['phone.unique' => ['code' => 'ERR006', 'message' => 'This phone is already in use.'],
         ]);
 
         $user = User::create([
@@ -40,20 +40,19 @@ class UserController extends Controller
             'user' => $user,
             'token' => $token,
         ];
-        return $this->apiResponse($response, 'register successfully',201);
-    }
 
+        return $this->apiResponse($response, 'register successfully');
+    }
 
     //logout and delete token
 
     public function logout( Request $request){
-        auth()->user()->tokens()->delete();
+        Auth()->user()->tokens()->delete();
 
-        return $this->apiResponse(null,'logout successfully',200);
+        return $this->apiResponse(null,'logout successfully');
     }
 
     //login
-
 
     public function login( Request $request){
          $request->validate([
@@ -63,18 +62,17 @@ class UserController extends Controller
 
         // check phone and password
 
-        $user = User::where('phone', $request->input('phone'),)->first();
+        $user = User::where('phone', $request->only('phone'))->first();
 
         if (!$user ){
 
             return $this->apiResponse(null,'Wrong phone number',401);
 
-
         }
 
         if ( !Hash::check ($request->input('password'),$user->password)){
 
-            return $this->apiResponse(null,'Wrong password',401);
+            return $this->apiResponse(null,'Wrong password');
         }
 
         $token = $user->createToken('myapp-token')->plainTextToken;
@@ -83,6 +81,6 @@ class UserController extends Controller
             'token'=>$token
         ];
 
-        return $this->apiResponse($response,'login successfully',200);
+        return $this->apiResponse($response,'login successfully');
     }
 }
