@@ -21,14 +21,7 @@ class MedicineController extends Controller
      */
     public function index()
     {
-        //showing all medicines for pharmacist
-        if(!auth()->user()->role)
-            return $this->apiResponse(Medicine::all(), 'medicine fetched successfully');
-
-        //showing all medicines for admin with status of each Medicine
-        else
-            return $this->apiResponse(Medicine::with('statusMedicines')
-            ->get(), 'medicine fetched successfully');
+         return $this->apiResponse(Medicine::all(), 'medicine fetched successfully');
     }
 
     /**
