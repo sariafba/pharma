@@ -26,7 +26,7 @@ Route::controller(MedicineController::class)->prefix('medicine')->middleware('au
         Route::delete('/delete/{id}', 'destroy');
         Route::put('/update/{id}', 'update');
         Route::post('/store', 'store');
-});
+    });
 
 //StatusMedicine
 Route::controller(StatusMedicineController::class)->prefix('status_medicine')->middleware('auth:sanctum')
@@ -53,7 +53,7 @@ Route::controller(PharmacistController::class)->prefix('pharmacist')
         Route::delete('/delete/{id}', 'destroy');
         Route::put('/update/{id}', 'update');
         Route::post('/create', 'store');
-});
+    });
 
 //Owner
 Route::controller(OwnerController::class)->prefix('owner')

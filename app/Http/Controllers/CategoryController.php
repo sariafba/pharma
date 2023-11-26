@@ -31,12 +31,12 @@ class CategoryController extends Controller
             return $this->apiResponse(null, 'access only for admin');
 
         $request->validate([
-         'name'=>'required|unique:categories,name'
+            'name'=>'required|unique:categories,name'
         ]);
 
         $category= Category::create([
 
-           'name' => $request->input('name')
+            'name' => $request->input('name')
         ]);
 
         if ($category){

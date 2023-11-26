@@ -21,7 +21,7 @@ class MedicineController extends Controller
      */
     public function index()
     {
-         return $this->apiResponse(Medicine::all(), 'medicine fetched successfully');
+        return $this->apiResponse(Medicine::all(), 'medicine fetched successfully');
     }
 
     /**
@@ -113,7 +113,7 @@ class MedicineController extends Controller
         ]) ;
 
 
-            return $this->apiResponse($medicine, 'the medicine updated');
+        return $this->apiResponse($medicine, 'the medicine updated');
 
     }
 
