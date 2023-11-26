@@ -21,14 +21,7 @@ class MedicineController extends Controller
      */
     public function index()
     {
-        //showing all medicines for pharmacist
-        if(!auth()->user()->role)
-            return $this->apiResponse(Medicine::all(), 'medicine fetched successfully');
-
-        //showing all medicines for admin with status of each Medicine
-        else
-            return $this->apiResponse(Medicine::with('statusMedicines')
-            ->get(), 'medicine fetched successfully');
+         return $this->apiResponse(Medicine::all(), 'medicine fetched successfully');
     }
 
     /**
@@ -140,9 +133,9 @@ class MedicineController extends Controller
             return $this->apiResponse($medicine, 'the medicine not found');
         }
 
-        $medicine->delete($id);
+        $result = $medicine->delete($id);
 
-        if ($medicine) {
+        if ($result) {
             return $this->apiResponse(null, 'the medicine deleted');
         }
 

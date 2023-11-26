@@ -21,26 +21,30 @@ Route::post('/login', [UserController::class,'login']);
 Route::controller(MedicineController::class)->prefix('medicine')->middleware('auth:sanctum')
     ->group(function (){
         Route::get('/', 'index');
-        Route::get('/{id}', 'show');
+        Route::get('show/{id}', 'show');
         Route::get('/search/{name}', 'search');
         Route::delete('/delete/{id}', 'destroy');
         Route::put('/update/{id}', 'update');
         Route::post('/store', 'store');
-//        Route::get('/{id}', 'showCategoryMedicines');
 });
 
+//StatusMedicine
+Route::controller(StatusMedicineController::class)->prefix('status_medicine')->middleware('auth:sanctum')
+    ->group(function() {
+        Route::post('/store/{id}', 'store');
+    });
+
 //category
-Route::controller(CategoryController::class)->prefix('category')
+Route::controller(CategoryController::class)->prefix('category')->middleware('auth:sanctum')
     ->group(function(){
         Route::get('/','index');
-        Route::get('/{id}', 'show');
+        Route::get('show/{id}', 'show');
         Route::post('/create', 'store');
         Route::put('/update/{id}', 'update');
         Route::delete('/delete/{id}', 'destroy');
-        Route::get('/{id}', 'show_category');
     });
 
-//pharmacist
+//pharmacist ???
 Route::controller(PharmacistController::class)->prefix('pharmacist')
     ->group(function (){
         Route::get('/', 'index');
@@ -49,14 +53,7 @@ Route::controller(PharmacistController::class)->prefix('pharmacist')
         Route::delete('/delete/{id}', 'destroy');
         Route::put('/update/{id}', 'update');
         Route::post('/create', 'store');
-    });
-
-//StatusMedicine
-Route::controller(StatusMedicineController::class)->prefix('status_medicine')
-    ->group(function() {
-        Route::get('/', 'index');
-        Route::put('/update/{id}', 'update');
-    });
+});
 
 //Owner
 Route::controller(OwnerController::class)->prefix('owner')

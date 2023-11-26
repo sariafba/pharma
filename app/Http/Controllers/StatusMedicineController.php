@@ -3,15 +3,19 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\Medicine;
 use App\Models\StatusMedicine;
 use App\Http\Requests\StoreStatusMedicineRequest;
 use App\Http\Requests\UpdateStatusMedicineRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class StatusMedicineController extends Controller
 {
+    use Apitrait;
+
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource. !!!!!
      */
     public function index()
     {
@@ -20,54 +24,56 @@ class StatusMedicineController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreStatusMedicineRequest $request)
+    public function store(Request $request, $id)
     {
-        $request->validate([
-            'quantity'=>'required',
-            'Expiration_date'=>'required']);
+        //access just for admin
+        if(!auth()->user()->role)
+            return $this->apiResponse(null, 'access only for admin');
 
-        $statusMedicine= StatusMedicine::create([
-            'quantity' => $request->only('quantity'),
-            'Expiration_date' => $request->only('required'),
+        $medicine = Medicine::find($id);
 
+        if (!$medicine)
+            return $this->apiResponse(null, 'No medicine found with the specified ID');
+
+        $validatedDAta = $request->validate([
+            'quantity' => 'required|integer',
+            'expiration_date' => 'required|date_format:Y-m-d'
+        ]);
+
+        $statusMedicine = StatusMedicine::create([
+            'medicine_id' => $medicine->id,
+            'quantity' => $validatedDAta['quantity'],
+            'expiration_date' => $validatedDAta['expiration_date']
         ]) ;
 
-        if ($statusMedicine) {
-            return $this->apiResponse( 'the status_medicine  defined successfully');
-        }
+        $medicine->update([
+            'quantity' => $medicine->statusMedicines()->sum('quantity')
+        ]);
 
-        return $this->apiResponse(null, 'the status_medicine not defined successfully');
+        //wrong way, search for way in future
+//        $medicine->quantity = StatusMedicine::where('medicine_id', $medicine->id)->sum('quantity');
+
+
+
+        if($statusMedicine)
+            return $this->apiResponse($statusMedicine, 'new quantity stored successfully');
+
     }
 
 
     /**
-     * Display the specified resource.
+     * Display the specified resource.  !!!!
      */
     public function show(StatusMedicine $statusMedicine)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(StatusMedicine $statusMedicine)
-    {
-
-    }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource in storage. !!!!
      */
     public function update(UpdateStatusMedicineRequest $request, StatusMedicine $statusMedicine)
     {
@@ -94,7 +100,7 @@ class StatusMedicineController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource from storage. !!!!
      */
     public function destroy(StatusMedicine $statusMedicine)
     {

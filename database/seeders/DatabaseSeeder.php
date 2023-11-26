@@ -30,13 +30,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Medicine::factory(5)->create([
-            'category_id' => 1,
-            'category_id' => 5
+            'category_id' => 1
         ]);
 
         StatusMedicine::factory(2)->create([
-            'medicine_id' =>1,
-            'medicine_id' =>2
+            'medicine_id' =>1
         ]);
     }
 }

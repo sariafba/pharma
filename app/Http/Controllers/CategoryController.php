@@ -12,20 +12,13 @@ use Illuminate\Support\Facades\Validator;
 class CategoryController extends Controller
 {
     use Apitrait;
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Category::all();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return $this->apiResponse(Category::all(),'categories fetched successfully');
     }
 
     /**
@@ -33,17 +26,21 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-     $request->validate([
-         'name'=>'required|unique:categories,name'
-     ]);
+        //access just for admin
+        if(!auth()->user()->role)
+            return $this->apiResponse(null, 'access only for admin');
 
-       $category= Category::create([
+        $request->validate([
+         'name'=>'required|unique:categories,name'
+        ]);
+
+        $category= Category::create([
 
            'name' => $request->input('name')
-       ]);
+        ]);
 
         if ($category){
-            return $this->apiResponse($category,'created');
+            return $this->apiResponse($category,'new category created');
         }
 
         return $this->apiResponse(null,'not created');
@@ -52,11 +49,10 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-
-    public function show_category($category_id)
+    public function show($id)
     {
 
-        $category = Category::with('medicines')->find($category_id);
+        $category = Category::with('medicines')->find($id);
 
         if (!$category) {
             return $this->apiResponse(null, 'Category not found.');
@@ -73,53 +69,53 @@ class CategoryController extends Controller
         return $this->apiResponse($data, 'Medicines for the given category.');
     }
 
-    public function show($id)
-    {
-
-    return Category::find($id);
-
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
-    {
-
-    }
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoryRequest $request, String $category_id)
+    public function update(Request $request, $id)
     {
-         $request->validate([ 'name' => 'required|']);
 
-        $category = Category::find($category_id);
+        //access just for admin
+        if(!auth()->user()->role)
+            return $this->apiResponse(null, 'access only for admin');
 
-        if (!$category) {
-            return $this->apiResponse($category, 'the post not found' );
-        }
-
-        $category->update($request->input('name'));
-
-        if ($category) {
-            return $this->apiResponse($category, 'the post updated' );
-        }
-    }
-        /**
-     * Remove the specified resource from storage.
-     */
-
-        public function destroy($id)
-    {
         $category = Category::find($id);
 
         if (!$category) {
-            return $this->apiResponse($category, 'the category not found', 404);
+            return $this->apiResponse($category, 'No category found with the specified ID' );
         }
-        $category->delete($id);
-        if ($category){
-            return $this->apiResponse(null, 'the category deleted', 200);
+
+        $request->validate([
+            'name' => 'required|string|unique:categories,name,' . $category->id
+        ]);
+
+        $category->update([
+            'name' => $request->input('name')
+        ]);
+
+        if ($category) {
+            return $this->apiResponse($category, 'category name updated' );
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
+    {
+        //access just for admin
+        if(!auth()->user()->role)
+            return $this->apiResponse(null, 'access only for admin');
+
+        $category = Category::find($id);
+
+        if (!$category)
+            return $this->apiResponse(null, 'the category not found');
+
+        $result = $category->delete($id);
+
+        if ($result){
+            return $this->apiResponse(null, 'the category deleted and all medicines related');
         }
     }
 }
