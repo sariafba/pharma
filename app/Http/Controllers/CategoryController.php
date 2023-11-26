@@ -74,7 +74,6 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-
         //access just for admin
         if(!auth()->user()->role)
             return $this->apiResponse(null, 'access only for admin');
@@ -116,6 +115,14 @@ class CategoryController extends Controller
 
         if ($result){
             return $this->apiResponse(null, 'the category deleted and all medicines related');
+        }
+    }
+
+    public function search($name)
+    {
+        $category = Category::Where('name', 'like', '%' . $name . '%')->get();
+        if ($category) {
+            return $this->apiResponse($category, 'here ur search');
         }
     }
 }

@@ -18,8 +18,8 @@ Route::post('/register', [USerController::class,'register']);
 Route::post('/login', [UserController::class,'login']);
 
 //medicine
-Route::controller(MedicineController::class)->prefix('medicine')->middleware('auth:sanctum')
-    ->group(function (){
+Route::controller(MedicineController::class)
+    ->prefix('medicine')->middleware('auth:sanctum')->group(function (){
         Route::get('/', 'index');
         Route::get('show/{id}', 'show');
         Route::get('/search/{name}', 'search');
@@ -29,16 +29,17 @@ Route::controller(MedicineController::class)->prefix('medicine')->middleware('au
     });
 
 //StatusMedicine
-Route::controller(StatusMedicineController::class)->prefix('status_medicine')->middleware('auth:sanctum')
-    ->group(function() {
+Route::controller(StatusMedicineController::class)
+    ->prefix('status_medicine')->middleware('auth:sanctum')->group(function() {
         Route::post('/store/{id}', 'store');
     });
 
 //category
-Route::controller(CategoryController::class)->prefix('category')->middleware('auth:sanctum')
-    ->group(function(){
+Route::controller(CategoryController::class)
+    ->prefix('category')->middleware('auth:sanctum')->group(function(){
         Route::get('/','index');
         Route::get('show/{id}', 'show');
+        Route::get('/search/{name}', 'search');
         Route::post('/create', 'store');
         Route::put('/update/{id}', 'update');
         Route::delete('/delete/{id}', 'destroy');
@@ -65,19 +66,3 @@ Route::controller(OwnerController::class)->prefix('owner')
 Route::get('test', function (){
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

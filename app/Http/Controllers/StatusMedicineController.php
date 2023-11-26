@@ -52,7 +52,7 @@ class StatusMedicineController extends Controller
             'quantity' => $medicine->statusMedicines()->sum('quantity')
         ]);
 
-        //wrong way, search for way in future
+        //wrong way, search for why in future
 //        $medicine->quantity = StatusMedicine::where('medicine_id', $medicine->id)->sum('quantity');
 
 
@@ -80,8 +80,6 @@ class StatusMedicineController extends Controller
         $request->validate([
             'quantity'=>'required',
             'Expiration_date'=>'required']);
-
-
 
         $statusMedicine = StatusMedicine::find($statusMedicine);
         if (!$statusMedicine) {

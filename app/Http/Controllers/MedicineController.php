@@ -102,7 +102,7 @@ class MedicineController extends Controller
         ]);
 
         $medicine->update([
-            //can use but, it's a security mistake
+            //can use put, it's a security mistake
 //            $request->all()
             //so use these approach instead
             'commercial_name' => $request->input('commercial_name') ?? $medicine->commercial_name,
