@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\PharmacistController;
 use App\Http\Controllers\StatusMedicineController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MedicineController;
@@ -30,7 +31,7 @@ Route::controller(MedicineController::class)->prefix('medicine')
         Route::delete('/delete/{id}', 'destroy');
         Route::put('/update/{id}', 'update');
         Route::post('/create', 'store');
-
+        Route::get('/{id}', 'showCategoryMedicines');
 
 });
 
@@ -38,7 +39,7 @@ Route::controller(MedicineController::class)->prefix('medicine')
 Route::controller(CategoryController::class)->prefix('category')
     ->group(function(){
         Route::get('/','index');
-        Route::get('/search/{name}', 'search');
+        Route::get('/{id}', 'show');
         Route::post('/create', 'store');
         Route::put('/update/{id}', 'update');
         Route::delete('/delete/{id}', 'destroy');

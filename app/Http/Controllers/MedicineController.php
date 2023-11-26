@@ -39,9 +39,7 @@ class MedicineController extends Controller
             'commercial_name' => 'required',
             'scientific_name' => 'required',
             'manufacture_company' => 'required',
-            'price' => 'required'
-
-        ]);
+            'price' => 'required']);
 
 
         $medicine = Medicine::create([
@@ -53,10 +51,10 @@ class MedicineController extends Controller
         ]);
 
         if ($medicine) {
-            return $this->apiResponse($medicine, 'the medicine inserted');
+            return $this->apiResponse($medicine, 'the medicine inserted', 201);
         }
 
-        return $this->apiResponse(null, 'the medicine didn\'t created');
+        return $this->apiResponse(null, 'the medicine didn\'t created', 401);
     }
 
     /**

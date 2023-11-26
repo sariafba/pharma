@@ -10,13 +10,25 @@ class Category extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are not mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $guarded = [];
 
-   // protected $with = ['medicines'];
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 
 
-
-
+    //relations
     public function medicines(): HasMany
     {
         return $this->hasMany(Medicine::class);
