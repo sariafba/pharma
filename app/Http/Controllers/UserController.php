@@ -21,8 +21,8 @@ class UserController extends Controller
             'name' => 'required|string',
             'phone' => 'required|unique:users,phone',
             'password' => 'required|confirmed',
-        //],
-           // ['phone.unique' => ['code' => 'ERR006', 'message' => 'This phone is already in use.'],
+        ],
+           ['phone.unique' => ['code' => 'ERR006', 'message' => 'This phone is already in use.'],
         ]);
 
         $user = User::create([
@@ -66,7 +66,7 @@ class UserController extends Controller
 
         if (!$user ){
 
-            return $this->apiResponse(null,'Wrong phone number',401);
+            return $this->apiResponse(null,'Wrong phone number');
 
         }
 

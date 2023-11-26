@@ -92,7 +92,7 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, String $category_id)
     {
-         $request->validate([ 'name' => 'required|']);
+         $request->validate([ 'name' => 'required']);
 
         $category = Category::find($category_id);
 
@@ -120,6 +120,15 @@ class CategoryController extends Controller
         $category->delete($id);
         if ($category){
             return $this->apiResponse(null, 'the category deleted', 200);
+        }
+    }
+
+    public function search($name)
+
+    {
+        $category = Category::Where('name', 'like', '%' . $name . '%')->get();
+        if ($category) {
+            return $this->apiResponse($category, 'here ur search');
         }
     }
 }

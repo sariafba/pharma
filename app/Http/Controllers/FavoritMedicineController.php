@@ -21,7 +21,7 @@ class FavoritMedicineController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -29,7 +29,10 @@ class FavoritMedicineController extends Controller
      */
     public function store(StoreFavoritMedicineRequest $request)
     {
-        //
+        $request->validate([
+
+
+        ])
     }
 
     /**
