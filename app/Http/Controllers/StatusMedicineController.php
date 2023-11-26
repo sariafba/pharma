@@ -75,8 +75,6 @@ class StatusMedicineController extends Controller
             'quantity'=>'required',
             'Expiration_date'=>'required']);
 
-
-
         $statusMedicine = StatusMedicine::find($statusMedicine);
         if (!$statusMedicine) {
             return $this->apiResponse($statusMedicine, 'the post not found');

@@ -32,7 +32,7 @@ class FavoritMedicineController extends Controller
         $request->validate([
 
 
-        ])
+        ]);
     }
 
     /**
