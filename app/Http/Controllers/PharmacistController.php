@@ -13,7 +13,7 @@ class PharmacistController extends Controller
      */
     public function index()
     {
-
+        return $this->apiResponse(Pharmacist::all(),'pharmacist fetched successfully');
     }
 
     /**
@@ -37,8 +37,9 @@ class PharmacistController extends Controller
      */
     public function show($id)
     {
-//        dd(Pharmacist::find($id)->user());
-        return Pharmacist::find($id);
+      //show for pharmacist
+      if(auth()->user()->role)
+          return $this->apiResponse(Pharmacist::find($id), 'pharmacist fetched successfully');
     }
 
     /**

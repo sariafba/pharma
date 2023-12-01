@@ -14,16 +14,14 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            'Heart medications',
-            'Chest medications',
-            'Digestive medications',
-            'Urinary medications',
+
             'Antibiotics',
-            'Analgesics',
             'Vitamins',
-            'Anti hypertensives',
-            'Antifungals',
-            'Antibacterials',
+            'cough',
+            'fever',
+            'digestive',
+            'skin',
+
         ];
         foreach ($categories as $category) {
             DB::table('categories')->insert([

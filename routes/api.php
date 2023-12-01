@@ -9,13 +9,14 @@ use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\UserController;
 
 
+
+
 Route::group(['middleware'=>['auth:sanctum']],function(){
     Route::post('/logout', [UserController::class,'logout']);
-});
 
-//unprotected
-Route::post('/register', [USerController::class,'register']);
+});
 Route::post('/login', [UserController::class,'login']);
+Route::post('/register', [USerController::class,'register']);
 
 //medicine
 Route::controller(MedicineController::class)
@@ -24,7 +25,7 @@ Route::controller(MedicineController::class)
         Route::get('show/{id}', 'show');
         Route::get('/search/{name}', 'search');
         Route::delete('/delete/{id}', 'destroy');
-        Route::put('/update/{id}', 'update');
+        Route::post('/update/{id}', 'update');
         Route::post('/store', 'store');
     });
 
@@ -50,15 +51,10 @@ Route::controller(PharmacistController::class)->prefix('pharmacist')
     ->group(function (){
         Route::get('/', 'index');
         Route::get('/{id}', 'show');
-        Route::get('/search/{name}', 'search');
-        Route::delete('/delete/{id}', 'destroy');
-        Route::put('/update/{id}', 'update');
-        Route::post('/create', 'store');
     });
 
 //Owner
-Route::controller(OwnerController::class)->prefix('owner')
-    ->group(function() {
+Route::controller(OwnerController::class)->prefix('owner')->group(function() {
         Route::post('/login', 'login');
     });
 

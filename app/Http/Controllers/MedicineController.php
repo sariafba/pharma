@@ -8,8 +8,11 @@ use App\Http\Requests\StoreMedicineRequest;
 use App\Http\Requests\UpdateMedicineRequest;
 use App\Models\StatusMedicine;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Psy\Util\Str;
 use Ramsey\Uuid\Type\Integer;
+use Illuminate\Support\Facades\URL;
 
 class MedicineController extends Controller
 
@@ -24,11 +27,12 @@ class MedicineController extends Controller
         return $this->apiResponse(Medicine::all(), 'medicine fetched successfully');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
+
+
     public function store(Request $request)
     {
+
         //access just for admin
         if(!auth()->user()->role)
             return $this->apiResponse(null, 'access only for admin');
@@ -37,12 +41,18 @@ class MedicineController extends Controller
             'commercial_name' => 'required|string|unique:medicines,commercial_name',
             'scientific_name' => 'required|string',
             'manufacture_company' => 'required|string',
-            'category_id' => 'required|integer|exists:categories,id',
             'price' => 'required|integer',
+            'image'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'category_id' => 'required|integer|exists:categories,id',
             'quantity' => 'required|integer',
             'expiration_date' => 'required|date_format:Y-m-d'
         ]);
 
+
+        if ($request->hasFile('image')) {
+            $imageName = time() . '_' . uniqid() . '.' . $request->image->extension();
+            $path = $request->image->storeAs('photo/', $imageName, 'public');
+           $imageUrl = URL::asset('storage/photo/' . $imageName);
 
         $medicine = Medicine::create([
             'commercial_name' => $validatedData['commercial_name'],
@@ -50,17 +60,23 @@ class MedicineController extends Controller
             'manufacture_company' => $validatedData['manufacture_company'],
             'quantity' => $validatedData['quantity'],
             'price' => $validatedData['price'],
+            'image'=>$imageUrl,
             'category_id' => $validatedData['category_id']
-        ]);
+        ]);}
 
         StatusMedicine::create([
             'medicine_id' => $medicine->id,
             'quantity' => $validatedData['quantity'],
             'expiration_date' => $validatedData['expiration_date']
         ]);
-
-        return $this->apiResponse($medicine,'medicine stored successfully');
+          $data=[
+            'medicine'=>$medicine,
+      //  'imageUrl'=>$imageUrl
+            ];
+        return $this->apiResponse($data,'medicine stored successfully');
     }
+
+
 
     /**
      * Display the specified resource.
@@ -98,9 +114,14 @@ class MedicineController extends Controller
             'scientific_name' => 'string',
             'manufacture_company' => 'string',
             'category_id' => 'integer|exists:categories,id',
-            'price' => 'integer'
+            'price' => 'integer',
+            'image'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
+        if ($request->hasFile('image')) {
+            $imageName = time() . '_' . uniqid() . '.' . $request->image->extension();
+            $path = $request->image->storeAs('photo/', $imageName, 'public');
+            $imageUrl = URL::asset('storage/photo/' . $imageName);
         $medicine->update([
             //can use put, it's a security mistake
 //            $request->all()
@@ -109,12 +130,14 @@ class MedicineController extends Controller
             'scientific_name' => $request->input('scientific_name') ?? $medicine->scientific_name,
             'manufacture_company' => $request->input('manufacture_company') ?? $medicine->manufacture_company,
             'price' => $request->input('price') ?? $medicine->price,
+            'image'=> $imageUrl,
             'category_id' => $request->input('category_id') ?? $medicine->category_id
         ]) ;
 
 
         return $this->apiResponse($medicine, 'the medicine updated');
 
+    }
     }
 
     /**
