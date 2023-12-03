@@ -33,5 +33,9 @@ class Category extends Model
     {
         return $this->hasMany(Medicine::class);
     }
-
+//    protected $appends = ['category_name'];
+//    public function getCategoryNameAttribute()
+//    {
+//        return $this->category->name ?? null;
+//    }
 }

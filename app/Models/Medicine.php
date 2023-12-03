@@ -54,4 +54,11 @@ class Medicine extends Model
 //        return $this->hasMany(Cart::class);
 //    }
 
+
+//for adding extra attribute for model
+    protected $appends = ['category_name'];
+    public function getCategoryNameAttribute()
+    {
+        return $this->category->name ?? null;
+    }
 }
