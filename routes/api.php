@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\FavoritMedicineController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\PharmacistController;
 use App\Http\Controllers\StatusMedicineController;
@@ -11,12 +12,16 @@ use App\Http\Controllers\UserController;
 
 
 
+
 Route::group(['middleware'=>['auth:sanctum']],function(){
     Route::post('/logout', [UserController::class,'logout']);
 
 });
 Route::post('/login', [UserController::class,'login']);
 Route::post('/register', [USerController::class,'register']);
+Route::get('/', [USerController::class,'index']);
+
+
 
 //medicine
 Route::controller(MedicineController::class)
@@ -24,7 +29,7 @@ Route::controller(MedicineController::class)
         Route::get('/', 'index');
         Route::get('show/{id}', 'show');
         Route::get('/search/{name}', 'search');
-        Route::delete('/delete/{id}', 'destroy');
+        Route::post('/delete/{id}', 'destroy');
         Route::post('/update/{id}', 'update');
         Route::post('/store', 'store');
     });
@@ -56,6 +61,13 @@ Route::controller(PharmacistController::class)->prefix('pharmacist')
 //Owner
 Route::controller(OwnerController::class)->prefix('owner')->group(function() {
         Route::post('/login', 'login');
+    });
+
+Route::controller(FavoritMedicineController::class)
+    ->prefix('favourite')->middleware('auth:sanctum') ->group(function (){
+        Route::get('/','index');
+        Route::post('/add/{id}','store');
+
     });
 
 //test

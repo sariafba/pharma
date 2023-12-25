@@ -11,6 +11,7 @@ class PharmacistController extends Controller
     /**
      * Display a listing of the resource.
      */
+    use Apitrait;
     public function index()
     {
         return $this->apiResponse(Pharmacist::all(),'pharmacist fetched successfully');

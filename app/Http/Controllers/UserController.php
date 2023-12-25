@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Apitrait;
 use App\Models\Pharmacist;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Apitrait;
 
 class UserController extends Controller
 {
@@ -88,5 +88,10 @@ class UserController extends Controller
         ];
 
         return response ($response,201);
+
+    }
+    public function index()
+    {
+        return $this->apiResponse(User::all(),'User fetched successfully');
     }
 }

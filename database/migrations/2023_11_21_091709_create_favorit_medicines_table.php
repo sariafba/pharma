@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('favorit_medicines', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('Pharmacist_id')
+            $table->foreignId('user_id')
                   ->constrained()
                   ->cascadeOnDelete()
                   ->cascadeOnUpdate();

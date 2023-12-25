@@ -10,14 +10,15 @@ class FavoritMedicine extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
 
     public function medicine(): BelongsTo
     {
         return $this->belongsTo(Medicine::class);
     }
 
-    public function pharmacist(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Pharmacist::class);
+        return $this->belongsTo(User::class);
     }
 }
