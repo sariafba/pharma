@@ -38,36 +38,33 @@ class FavoritMedicineController extends Controller
     public function store(Request $request, $id)
     {
         $user = auth()->user();
-        if (!$user->role) {
+        if ($user->role)
+            return $this->apiResponse(null, 'access only for pharmacist');
 
-            $medicine = Medicine::find($id);
 
-            if (!$medicine) {
-                return $this->apiResponse(null, 'No medicine found with the specified ID');
-            }
+        $medicine = Medicine::find($id);
+        if (!$medicine) {
+            return $this->apiResponse(null, 'No medicine found with the specified ID');
+        }
 
-            if ($user->favoriteMedicines()->where('medicine_id', $medicine->id)->exists()) {
-                return $this->apiResponse(null, 'This medicine is already in favorites');
-            }
+        $favoriteMedicine = FavoritMedicine::where('user_id', $user->id)
+            ->where('medicine_id', $id)->first();
 
-            $favoriteMedicine = FavoritMedicine::create([
+        if (!$favoriteMedicine) {
+
+            FavoritMedicine::create([
                 'user_id' => $user->id,
                 'medicine_id' => $medicine->id,
             ]);
 
-            return $this->apiResponse( $favoriteMedicine,'Medicine stored successfully');
+            return $this->apiResponse(null, 'Medicine add to the favourite successfully');
         }
-
-        // Allow users with a 'role' to perform the action
-     //   $this->authorize('store', FavoritMedicine::class);
-
-        // The rest of your code for users with a 'role'
-    }
-
-
-    //
-
-
+        else
+        {
+            $favoriteMedicine->delete();
+            return $this->apiResponse(null, 'Medicine remove from favourite successfully');
+        }
+        }
             /**
      * Display the specified resource.
      */
