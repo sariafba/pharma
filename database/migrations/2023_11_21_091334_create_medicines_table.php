@@ -18,6 +18,7 @@ return new class extends Migration
             $table->String('manufacture_company');
             $table->integer('quantity')->default(0);
             $table->decimal('price');
+            $table->string('image');
             $table->foreignId('category_id')
                 ->constrained()
                 ->cascadeOnUpdate()

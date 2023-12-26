@@ -56,14 +56,6 @@ class Medicine extends Model
 //    }
 
 ////////dont delete//////////
-//for adding extra attribute for model
-
-//    protected $appends = ['category_name'];
-//    public function getCategoryNameAttribute()
-//    {
-//        return $this->category->name ?? null;
-//    }
-
 //    protected function categoryId(): Attribute
 //    {
 //        return Attribute::make(
@@ -71,4 +63,11 @@ class Medicine extends Model
 //        );
 //    }
 
+
+//for adding extra attribute for model
+    protected $appends = ['category_name'];
+    public function getCategoryNameAttribute()
+    {
+        return $this->category->name ?? null;
+    }
 }

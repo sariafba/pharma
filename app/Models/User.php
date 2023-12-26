@@ -48,8 +48,13 @@ class User extends Authenticatable
         return $this->hasmany(Cart::class);
     }
 
+    public function favoritMedicines(): HasMany
+    {
+        return $this->hasMany(FavoritMedicine::class);
+    }
 
-
-
-
+public function medicine()
+{
+    return $this->belongsToMany(Medicine::class)->withTimestamps();
+}
 }

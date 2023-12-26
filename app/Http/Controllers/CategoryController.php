@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Medicine;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
@@ -27,24 +28,32 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //access just for admin
-        if(!auth()->user()->role)
+        if (!auth()->user()->role)
             return $this->apiResponse(null, 'access only for admin');
 
-        $request->validate([
-            'name'=>'required|unique:categories,name'
+        $validatedData = $request->validate([
+            'name' => 'required|unique:categories,name',
+            'photo' =>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $category= Category::create([
+        if ($request->hasFile('photo')) {
+            $imageName = time() . '_' . uniqid() . '.' . $request->photo->extension();
+            $path = $request->photo->storeAs('photo/', $imageName, 'public');
+            $imageUrl = URL::asset('storage/photo/' . $imageName);
 
-            'name' => $request->input('name')
-        ]);
+            $category = Category::create([
+                'name' => $validatedData['name'],
+                'photo' => $imageUrl
+            ]);
 
-        if ($category){
-            return $this->apiResponse($category,'new category created');
+            return $this->apiResponse($category, 'new category created');
+
         }
-
-        return $this->apiResponse(null,'not created');
     }
+
+
+
+
 
     /**
      * Display the specified resource.

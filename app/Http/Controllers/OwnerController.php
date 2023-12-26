@@ -29,10 +29,14 @@ class OwnerController extends Controller
         $admin = User::where('phone', $validatedData['phone'])->first();
 
         if (!$admin || !$admin->role == 1)
-            return $this->apiResponse(null, 'you are not Admin');
+            return response([
+
+                'message'=>'you are not admin'],401);
 
         if (!Hash::check($validatedData['password'], $admin->password))
-            return $this->apiResponse(null, 'wrong password');
+            return response([
+
+                'message'=>'Wrong password'],401);
 
         $token = $admin->createToken('myapp-token')->plainTextToken;
 
