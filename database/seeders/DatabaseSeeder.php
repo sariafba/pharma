@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Medicine;
 use App\Models\StatusMedicine;
@@ -25,16 +26,27 @@ class DatabaseSeeder extends Seeder
             'role' => 1
         ]);
 
+        User::factory(5)->create();
+
         $this->call([
             CategorySeeder::class
         ]);
 
-        Medicine::factory(5)->create([
+        Medicine::factory(10)->create([
             'category_id' => 1
         ]);
 
         StatusMedicine::factory(2)->create([
             'medicine_id' =>1
         ]);
+
+        for ($i=1; $i<=5; $i++){
+
+            Cart::create([
+                'medicine_id' => $i,
+                'user_id' => 2
+            ]);
+        }
+
     }
 }

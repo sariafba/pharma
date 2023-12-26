@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\PharmacistController;
@@ -43,6 +44,14 @@ Route::controller(CategoryController::class)
         Route::post('/create', 'store');
         Route::put('/update/{id}', 'update');
         Route::delete('/delete/{id}', 'destroy');
+    });
+
+//cart
+Route::controller(CartController::class)
+    ->prefix('cart')->middleware('auth:sanctum')->group(function() {
+        Route::post('/store/{id}', 'store');
+        Route::get('/show', 'show');
+
     });
 
 //pharmacist ???

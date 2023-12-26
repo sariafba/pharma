@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -52,6 +53,22 @@ class Medicine extends Model
 //    public function carts(): HasMany
 //    {
 //        return $this->hasMany(Cart::class);
+//    }
+
+////////dont delete//////////
+//for adding extra attribute for model
+
+//    protected $appends = ['category_name'];
+//    public function getCategoryNameAttribute()
+//    {
+//        return $this->category->name ?? null;
+//    }
+
+//    protected function categoryId(): Attribute
+//    {
+//        return Attribute::make(
+//            get: fn ($value) => Category::find($value)->name,
+//        );
 //    }
 
 }
