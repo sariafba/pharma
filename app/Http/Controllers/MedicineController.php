@@ -115,7 +115,7 @@ class MedicineController extends Controller
             'manufacture_company' => 'string',
             'category_id' => 'integer|exists:categories,id',
             'price' => 'integer',
-            'image'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+//            'image'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         if ($request->hasFile('image')) {

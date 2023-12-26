@@ -13,20 +13,20 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-//        $categories = [
-//
-//            'Antibiotics',
-//            'Vitamins',
-//            'cough',
-//            'fever',
-//            'digestive',
-//            'skin',
-//
-//        ];
-//        foreach ($categories as $category) {
-//            DB::table('categories')->insert([
-//                'name' => $category
-//            ]);
-//        }
+        $categories = [
+
+            'Antibiotics',
+            'Vitamins',
+            'cough',
+            'fever',
+            'digestive',
+            'skin',
+
+        ];
+        foreach ($categories as $category) {
+            DB::table('categories')->insert([
+                'name' => $category
+            ]);
+        }
     }
 }

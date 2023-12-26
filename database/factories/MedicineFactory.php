@@ -22,7 +22,8 @@ class MedicineFactory extends Factory
             'scientific_name' => fake()->name(),
             'manufacture_company' => fake()->name(),
             'price' => fake()->numberBetween(1,20),
-            'category_id' => Category::factory()
+            'category_id' => Category::factory(),
+//            'image' => fake()->randomElement('storage/app/public/photo/img_fever.png')
 
         ];
     }
