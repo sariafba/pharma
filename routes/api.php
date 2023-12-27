@@ -57,6 +57,10 @@ Route::controller(CartController::class)
     ->prefix('cart')->middleware('auth:sanctum')->group(function() {
         Route::post('/store/{id}', 'store');
         Route::get('/show', 'show');
+        Route::post('/delete/{id}', 'destroy');
+        Route::post('/update/{id}', 'update');
+
+
 
     });
 

@@ -22,50 +22,45 @@ class CartController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(int $id, Request $request)
+    public function store(int $id)
     {
         $user = auth()->user();
 
-        if ($user->role) {
-            return $this->apiResponse(null, 'Access only for pharmacist');
-        }
+        if($user->role)
+            return $this->apiResponse(null, 'access only for pharmacist');
 
         $medicine = Medicine::find($id);
+        if (!$medicine)
+            return $this->apiResponse(null, 'no medicine for this id');
 
-        if (!$medicine) {
-            return $this->apiResponse(null, 'No medicine for this id');
-        }
+        $isInCart = Cart::where('user_id', $user->id)
+            ->where('medicine_id', $id)->first();
 
-        $Cart = Cart::where('user_id', $user->id)->where('medicine_id', $id)->first();
+        if (!$isInCart)
+        {
 
-        if (!$Cart) {
-
-            $quantityToAdd = $request->input('quantity');
-
-            if ($medicine->quantity >= $quantityToAdd) {
-
-                $medicinePrice = $medicine->price ?? 0;
-                $totalPrice = $medicinePrice * $quantityToAdd;
-
-
-                Cart::create([
+            Cart::create([
                 'user_id' => $user->id,
                 'medicine_id' => $id,
-                'quantity' => $quantityToAdd,
-                'price' => $totalPrice,
+                'quantity' => 1,
+                'price' => $medicine->price
             ]);
-                $medicine->decrement('quantity', $quantityToAdd);
 
-                return $this->apiResponse(null, 'Medicine added to cart successfully');
-            }
-            else {
-                return $this->apiResponse(null, 'Not enough quantity in stock');
-            }
-        } else {
-            return $this->apiResponse(null, 'Medicine already in cart');
+            return $this->apiResponse(null, 'medicine added to cart successful');
+
         }
-    }
+        else
+        {
+            return $this->apiResponse(null, '!!! medicine already in cart');
+        }
 
+
+
+
+
+
+
+    }
     /**
      * Display the specified resource.
      */
@@ -86,13 +81,28 @@ class CartController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if(!auth()->user()->role)
-            return $this->apiResponse(null, 'access only for admin');
+        $user = auth()->user();
+        if ($user->role)
+            return $this->apiResponse(null, 'access only for pharmacist');
 
-        $medicine = Medicine::find($id);
+        $isInCart = Cart::where('user_id', $user->id)
+            ->where('medicine_id', $id)->first();
 
-        if (!$medicine)
-            return $this->apiResponse(null, 'No medicine found with the specified ID');
+        if (!$isInCart)
+        {
+            return $this->apiResponse(null, '!!! this medicine not in your cart');
+        }
+
+        $request->validate([
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        $isInCart->update([
+            'quantity' => $request['quantity'],
+            'price' => $isInCart->price * $request['quantity']
+        ]);
+
+        return $this->apiResponse(null, 'new quantity '. $request['quantity']);
 
     }
 
@@ -105,20 +115,22 @@ class CartController extends Controller
         if ($user->role)
             return $this->apiResponse(null, 'access only for pharmacist');
 
-
-        $medicine = Medicine::find($id);
-
-        if (!$medicine) {
-            return $this->apiResponse($medicine, 'the medicine not found');
-        }
-        $cart = Cart::where('user_id', $user->id)
+        $isInCart = Cart::where('user_id', $user->id)
             ->where('medicine_id', $id)->first();
 
-        if ($cart) {
-            $result = $cart->delete();
-            if ($result) {
-                return $this->apiResponse(null, 'the medicine deleted from favourite');
-            }
+        if (!$isInCart)
+        {
+            return $this->apiResponse(null, '!!! this medicine not in your cart');
         }
+
+        else
+        {
+            $isInCart->delete();
+            return $this->apiResponse(null, 'medicine removed from cart successful');
+
+
+        }
+
+
     }
 }

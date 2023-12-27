@@ -43,7 +43,9 @@ class DatabaseSeeder extends Seeder
         for ($i=1; $i<=5; $i++){
             Cart::create([
                 'medicine_id' => $i,
-                'user_id' => 2
+                'user_id' => 2,
+                'quantity' => 1,
+                'price' => Medicine::find($i)->price
             ]);
         }
 
