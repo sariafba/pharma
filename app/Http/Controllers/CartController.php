@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Medicine;
 use Illuminate\Http\Request;
-use function MongoDB\BSON\toJSON;
 
 
 class CartController extends Controller

@@ -17,7 +17,8 @@ class Cart extends Model
         'created_at',
         'updated_at',
         'id',
-        'user_id'
+        'user_id',
+        'medicine_id'
     ];
 
 
