@@ -50,10 +50,10 @@ class Medicine extends Model
 //        return $this->hasMany(Order::class);
 //    }
 
-//    public function carts(): HasMany
-//    {
-//        return $this->hasMany(Cart::class);
-//    }
+   public function carts(): HasMany
+   {
+        return $this->hasMany(Cart::class);
+   }
 
 ////////dont delete//////////
 //    protected function categoryId(): Attribute
