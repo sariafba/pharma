@@ -22,7 +22,7 @@ return new class extends Migration
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
             $table->integer('quantity')->default(1);
-            $table->integer('price')->default(0);
+            $table->integer('total_price')->default(0);
 
 
             $table->timestamps();

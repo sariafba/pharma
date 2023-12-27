@@ -21,31 +21,39 @@ class DatabaseSeeder extends Seeder
         //setting admin in database
         User::create([
             'name' => 'admin',
-            'phone' => "0943946262",
+            'phone' => '0912345678',
             'password' => bcrypt('password'),
             'role' => 1
         ]);
 
-        User::factory(5)->create();
+        User::factory(1)->create([
+            'phone' => '0943946262'
+        ]);
 
         $this->call([
             CategorySeeder::class
         ]);
 
-        Medicine::factory(10)->create([
+        Medicine::factory(5)->create([
             'category_id' => 1
         ]);
 
-        StatusMedicine::factory(2)->create([
-            'medicine_id' =>1
-        ]);
+        for ($i=1; $i<=5; $i++)
+        {
+            StatusMedicine::factory(5)->create([
+                'medicine_id' => $i
+            ]);
 
+            Medicine::find($i)->update([
+                'quantity' => StatusMedicine::where('medicine_id', $i)->sum('quantity')
+            ]);
+        }
         for ($i=1; $i<=5; $i++){
             Cart::create([
                 'medicine_id' => $i,
                 'user_id' => 2,
                 'quantity' => 1,
-                'price' => Medicine::find($i)->price
+                'total_price' => Medicine::find($i)->price
             ]);
         }
 

@@ -99,7 +99,7 @@ class CartController extends Controller
 
         $isInCart->update([
             'quantity' => $request['quantity'],
-            'price' => $isInCart->price * $request['quantity']
+            'total_price' => $isInCart->price * $request['quantity']
         ]);
 
         return $this->apiResponse(null, 'new quantity '. $request['quantity']);
