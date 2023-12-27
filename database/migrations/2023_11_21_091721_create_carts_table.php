@@ -21,6 +21,10 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
+            $table->integer('quantity')->default(1);
+            $table->integer('price')->default(0);
+
+
             $table->timestamps();
         });
     }

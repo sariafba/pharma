@@ -14,13 +14,13 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-
-            'Antibiotics',
-            'Vitamins',
-            'cough',
-            'fever',
             'digestive',
             'skin',
+            'Antibiotics',
+            'cough',
+            'fever',
+            'Vitamins',
+
 
         ];
         foreach ($categories as $category) {

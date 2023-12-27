@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
         //setting admin in database
         User::create([
             'name' => 'admin',
-            'phone' => "0977",
+            'phone' => "0943946262",
             'password' => bcrypt('password'),
             'role' => 1
         ]);

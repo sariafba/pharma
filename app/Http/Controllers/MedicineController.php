@@ -42,7 +42,7 @@ class MedicineController extends Controller
             'scientific_name' => 'required|string',
             'manufacture_company' => 'required|string',
             'price' => 'required|integer',
-            'image'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+          //  'image'=>'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'category_id' => 'required|integer|exists:categories,id',
             'quantity' => 'required|integer',
             'expiration_date' => 'required|date_format:Y-m-d'
