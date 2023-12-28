@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('status_orders', function (Blueprint $table) {
             $table->id();
-            $table->String('status');
-            $table->boolean('payment');
-            $table->foreignId('pharmacist_id')
+            $table->String('status')->default('received');
+            $table->String('payment')->default('unpaid');
+            $table->foreignId('user_id')
                   ->constrained()
                   ->cascadeOnDelete()
                   ->cascadeOnUpdate();
