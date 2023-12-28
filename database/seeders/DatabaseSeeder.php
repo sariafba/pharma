@@ -34,11 +34,11 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class
         ]);
 
-        Medicine::factory(5)->create([
+        Medicine::factory(20)->create([
             'category_id' => 1
         ]);
 
-        for ($i=1; $i<=5; $i++)
+        for ($i=1; $i<=20; $i++)
         {
             StatusMedicine::factory(5)->create([
                 'medicine_id' => $i

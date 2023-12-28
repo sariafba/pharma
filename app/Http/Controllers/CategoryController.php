@@ -40,15 +40,15 @@ class CategoryController extends Controller
             $imageName = time() . '_' . uniqid() . '.' . $request->photo->extension();
             $path = $request->photo->storeAs('photo/', $imageName, 'public');
             $imageUrl = URL::asset('storage/photo/' . $imageName);
-
+        }
             $category = Category::create([
                 'name' => $validatedData['name'],
-                'photo' => $imageUrl
+                'photo' => $imageUrl ?? null
             ]);
 
             return $this->apiResponse($category, 'new category created');
 
-        }
+
     }
 
 

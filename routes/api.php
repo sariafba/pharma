@@ -80,7 +80,7 @@ Route::controller(FavoritMedicineController::class)
     ->prefix('favourite')->middleware('auth:sanctum') ->group(function (){
         Route::get('/','index');
         Route::post('/add/{id}','store');
-        Route::get('/show','show');
+        Route::get('/show/{id}','show');
         Route::post('/delete/{id}', 'destroy');
     });
 

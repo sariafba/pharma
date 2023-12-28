@@ -118,26 +118,28 @@ class MedicineController extends Controller
 //            'image'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        if ($request->hasFile('image')) {
+        if ($request->hasFile('image'))
+        {
             $imageName = time() . '_' . uniqid() . '.' . $request->image->extension();
             $path = $request->image->storeAs('photo/', $imageName, 'public');
             $imageUrl = URL::asset('storage/photo/' . $imageName);
+        }
         $medicine->update([
             //can use put, it's a security mistake
-//            $request->all()
+            //$request->all()
             //so use these approach instead
             'commercial_name' => $request->input('commercial_name') ?? $medicine->commercial_name,
             'scientific_name' => $request->input('scientific_name') ?? $medicine->scientific_name,
             'manufacture_company' => $request->input('manufacture_company') ?? $medicine->manufacture_company,
             'price' => $request->input('price') ?? $medicine->price,
-            'image'=> $imageUrl,
+            'image'=> $imageUrl ?? null,
             'category_id' => $request->input('category_id') ?? $medicine->category_id
         ]) ;
 
 
         return $this->apiResponse($medicine, 'the medicine updated');
 
-    }
+
     }
 
     /**

@@ -43,7 +43,7 @@ class CartController extends Controller
                 'user_id' => $user->id,
                 'medicine_id' => $id,
                 'quantity' => 1,
-                'price' => $medicine->price
+                'total_price' => $medicine->price
             ]);
 
             return $this->apiResponse(null, 'medicine added to cart successful');
