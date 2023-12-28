@@ -9,6 +9,8 @@ use App\Http\Controllers\StatusMedicineController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\NotificationController;
+
 
 
 
@@ -82,6 +84,11 @@ Route::controller(FavoritMedicineController::class)
         Route::post('/add/{id}','store');
         Route::get('/show/{id}','show');
         Route::post('/delete/{id}', 'destroy');
+    });
+
+Route::controller(NotificationController::class)
+    ->prefix('notification')->middleware('auth:sanctum') ->group(function (){
+        Route::get('/','send');
     });
 
 //test

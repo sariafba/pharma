@@ -49,7 +49,7 @@ class MedicineController extends Controller
         ]);
 
 
-        if ($request->hasFile('image')) {
+
             $imageName = time() . '_' . uniqid() . '.' . $request->image->extension();
             $path = $request->image->storeAs('photo/', $imageName, 'public');
            $imageUrl = URL::asset('storage/photo/' . $imageName);
@@ -62,7 +62,7 @@ class MedicineController extends Controller
             'price' => $validatedData['price'],
             'image'=>$imageUrl,
             'category_id' => $validatedData['category_id']
-        ]);}
+        ]);
 
         StatusMedicine::create([
             'medicine_id' => $medicine->id,
