@@ -54,12 +54,6 @@ class CartController extends Controller
             return $this->apiResponse(null, '!!! medicine already in cart');
         }
 
-
-
-
-
-
-
     }
     /**
      * Display the specified resource.
@@ -73,7 +67,9 @@ class CartController extends Controller
 
         $medicines = Cart::where('user_id', $user->id)->with('medicine')->get();
 
-        return $this->apiResponse($medicines, 'my cart');
+        $totalCartPrice = Cart::where('user_id', $user->id)->sum('total_price');
+
+        return $this->apiResponse(['total' => $totalCartPrice, 'cart' => $medicines], 'my cart');
     }
 
     /**
@@ -93,13 +89,15 @@ class CartController extends Controller
             return $this->apiResponse(null, '!!! this medicine not in your cart');
         }
 
+        $medicine = Medicine::find($id);
+
         $request->validate([
             'quantity' => 'required|integer|min:1',
         ]);
 
         $isInCart->update([
             'quantity' => $request['quantity'],
-            'total_price' => $isInCart->price * $request['quantity']
+            'total_price' => $medicine->price * $request['quantity']
         ]);
 
         return $this->apiResponse(null, 'new quantity '. $request['quantity']);
