@@ -18,9 +18,9 @@ class MedicineFactory extends Factory
     public function definition(): array
     {
         return [
-            'commercial_name' => fake()->name(),
-            'scientific_name' => fake()->name(),
-            'manufacture_company' => fake()->name(),
+            'commercial_name' => fake()->firstName,
+            'scientific_name' => fake()->word(),
+            'manufacture_company' => fake()->word(),
             'price' => fake()->numberBetween(1,20),
             'category_id' => Category::factory(),
 //            'image' => fake()->randomElement('storage/app/public/photo/img_fever.png')

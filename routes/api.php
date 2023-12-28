@@ -3,6 +3,7 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FavoritMedicineController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\PharmacistController;
 use App\Http\Controllers\StatusMedicineController;
@@ -61,10 +62,18 @@ Route::controller(CartController::class)
         Route::get('/show', 'show');
         Route::post('/delete/{id}', 'destroy');
         Route::post('/update/{id}', 'update');
+    });
 
+//order
+Route::controller(OrderController::class)
+    ->prefix('order')->middleware('auth:sanctum')->group(function() {
+        Route::post('/store', 'store');
+        Route::get('/show/{id}', 'show');
+        Route::get('/index', 'index');
 
 
     });
+
 
 //pharmacist ???
 Route::controller(PharmacistController::class)->prefix('pharmacist')
@@ -78,6 +87,7 @@ Route::controller(OwnerController::class)->prefix('owner')->group(function() {
         Route::post('/login', 'login');
     });
 
+//favourite
 Route::controller(FavoritMedicineController::class)
     ->prefix('favourite')->middleware('auth:sanctum') ->group(function (){
         Route::get('/','index');

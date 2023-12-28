@@ -10,6 +10,15 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'id',
+        'status_orders_id',
+        'medicine_id'
+    ];
 
     public function statusOrder(): BelongsTo
     {
