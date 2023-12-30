@@ -25,10 +25,10 @@ class OrderController extends Controller
 
         $statusOrder = StatusOrder::where('user_id', $user->id)->get();
 
-        if ($statusOrder->isEmpty())
-        {
-            return $this->apiResponse(null, 'you dont have any order');
-        }
+//        if ($statusOrder->isEmpty())
+//        {
+//            return $this->apiResponse(null, 'you dont have any order');
+//        }
 
         return $this->apiResponse($statusOrder,'your orders');
 
@@ -78,7 +78,7 @@ class OrderController extends Controller
         for ($i=0; $i<$medicines->count(); $i++)
         Order::create([
             'status_orders_id' => $statusOrder->id,
-            'medicine_id' => $medicines[$i]->id,
+            'medicine_id' => $medicines[$i]->medicine_id,
             'required_quantity' => $medicines[$i]->quantity
         ]);
 
