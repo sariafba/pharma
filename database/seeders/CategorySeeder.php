@@ -25,7 +25,8 @@ class CategorySeeder extends Seeder
         ];
         foreach ($categories as $category) {
             DB::table('categories')->insert([
-                'name' => $category
+                'name' => $category,
+                'photo'=> fake()->randomElement(['public/storage/photo/img_fever.png'])
             ]);
         }
     }

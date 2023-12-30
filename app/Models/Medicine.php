@@ -63,7 +63,10 @@ class Medicine extends Model
 //        );
 //    }
 
-
+    public function getPhotoUrlAttribute()
+    {
+        return asset('storage/photo/' . $this->image);
+    }
 //for adding extra attribute for model
     protected $appends = ['category_name'];
     public function getCategoryNameAttribute()

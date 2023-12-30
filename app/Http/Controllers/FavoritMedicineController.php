@@ -46,10 +46,7 @@ class FavoritMedicineController extends Controller
         if (!$medicine) {
             return $this->apiResponse(null, 'No medicine found with the specified ID');
         }
-//        if ($user->favoriteMedicines()->where('medicine_id', $medicine->id)->exists()) {
-//            return $this->apiResponse(null, 'This medicine is already in favorites');
-//
-//        }
+
         $favoriteMedicine = FavoritMedicine::where('user_id', $user->id)
             ->where('medicine_id', $id)->first();
 

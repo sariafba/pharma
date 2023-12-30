@@ -23,8 +23,8 @@ class MedicineFactory extends Factory
             'manufacture_company' => fake()->word(),
             'price' => fake()->numberBetween(1,20),
             'category_id' => Category::factory(),
-//            'image' => fake()->randomElement('storage/app/public/photo/img_fever.png')
-
+          'image' => fake()->randomElement(['public/storage/photo/img_fever.png'])
         ];
+
     }
 }
