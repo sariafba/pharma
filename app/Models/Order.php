@@ -29,4 +29,20 @@ class Order extends Model
     {
         return $this->belongsTo(Medicine::class);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Register a creating event listener
+        static::creating(function ($orderMedicine) {
+            // Set a default value for the 'status' field
+            $medicine = Medicine::find($orderMedicine->medicine_id);
+
+            $newQuantity = $medicine->quantity - $orderMedicine->required_quantity;
+            $medicine->update([
+                'quantity' => $newQuantity,
+            ]);
+        });
+    }
 }

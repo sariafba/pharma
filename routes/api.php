@@ -7,6 +7,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\PharmacistController;
 use App\Http\Controllers\StatusMedicineController;
+use App\Http\Controllers\StatusOrderController as StatusOrderControllerAlias;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\UserController;
@@ -68,8 +69,14 @@ Route::controller(OrderController::class)
         Route::post('/store', 'store');
         Route::get('/show/{id}', 'show');
         Route::get('/index', 'index');
+    });
 
-
+//status order
+Route::controller(StatusOrderControllerAlias::class)
+    ->prefix('status_order')->middleware('auth:sanctum')->group(function() {
+        Route::post('/update/{id}', 'update');
+        Route::get('/show/{id}', 'show');
+        Route::get('/index', 'index');
     });
 
 
@@ -90,7 +97,7 @@ Route::controller(FavoritMedicineController::class)
     ->prefix('favourite')->middleware('auth:sanctum') ->group(function (){
         Route::get('/','index');
         Route::post('/add/{id}','store');
-        Route::get('/show/{id}','show');
+        Route::get('/show','show');
         Route::post('/delete/{id}', 'destroy');
     });
 
