@@ -14,7 +14,7 @@ class ReportController extends Controller
 {
     use Apitrait;
 
-    public function Report(Request $request)
+    public function statusReport(Request $request)
     {
         if (!auth()->user()->role) {
             return $this->apiResponse(null, 'Access only for admin');
@@ -27,19 +27,14 @@ class ReportController extends Controller
 
         // Admin Report for the current month
         $Report = Medicine::withSum('statusMedicines', 'report_quantity')
-            ->withSum('orders', 'required_quantity')
-            ->whereHas('statusMedicines', function ($query) use ($currentMonth, $currentYear) {
+            ->orwhereHas('statusMedicines', function ($query) use ($currentMonth, $currentYear) {
                 $query->whereMonth('expiration_date', '=', $currentMonth)
                     ->whereYear('expiration_date', '=', $currentYear);
-            })
-            ->orWhereHas('orders', function ($query) use ($currentMonth, $currentYear) {
-                $query->whereMonth('created_at', '=', $currentMonth)
-                    ->whereYear('created_at', '=', $currentYear);
             })
             ->get();
 
         $response = [
-            'adminReport' => $Report,
+            'statusReport' => $Report,
             'startDate' => now()->startOfMonth()->format('Y-m-d'),
             'endDate' => now()->endOfMonth()->format('Y-m-d'),
         ];
@@ -48,6 +43,29 @@ class ReportController extends Controller
     }
 
 
+    public function OrderReport(Request $request)
+    {
+        if (!auth()->user()->role) {
+            return $this->apiResponse(null, 'Access only for admin');
+        }
+
+        // Get the current month and year
+        $currentDate = Carbon::now();
+        $currentYear = $currentDate->year;
+        $currentMonth = $currentDate->month;
 
 
+        $orderReport = Medicine::withSum('orders', 'required_quantity')
+            ->orWhereHas('orders', function ($query) use ($currentMonth, $currentYear) {
+                $query->whereMonth('created_at', '=', $currentMonth)
+                    ->whereYear('created_at', '=', $currentYear);
+            })
+            ->get();
+        $response = [
+            'OrderReport' => $orderReport,
+            'startDate' => now()->startOfMonth()->format('Y-m-d'),
+            'endDate' => now()->endOfMonth()->format('Y-m-d'),
+        ];
+        return response($response);
+    }
 }

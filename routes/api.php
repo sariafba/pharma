@@ -112,7 +112,9 @@ Route::controller(NotificationController::class)
 
 Route::controller(ReportController::class)
     ->prefix('Report')->middleware('auth:sanctum') ->group(function (){
-        Route::get('show','Report');
+        Route::get('statusReport','statusReport');
+        Route::get('OrderReport','OrderReport');
+
     });
 //test
 Route::get('test', function (){
