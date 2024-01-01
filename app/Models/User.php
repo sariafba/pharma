@@ -57,4 +57,8 @@ public function medicine()
 {
     return $this->belongsToMany(Medicine::class)->withTimestamps();
 }
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

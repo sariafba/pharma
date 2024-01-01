@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FavoritMedicineController;
@@ -7,7 +8,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\PharmacistController;
 use App\Http\Controllers\StatusMedicineController;
-use App\Http\Controllers\StatusOrderController as StatusOrderControllerAlias;
+use App\Http\Controllers\StatusOrderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\UserController;
@@ -74,7 +75,7 @@ Route::controller(OrderController::class)
     });
 
 //status order
-Route::controller(StatusOrderControllerAlias::class)
+Route::controller(StatusOrderController::class)
     ->prefix('status_order')->middleware('auth:sanctum')->group(function() {
         Route::post('/update/{id}', 'update');
         Route::get('/show/{id}', 'show');
@@ -108,7 +109,17 @@ Route::controller(NotificationController::class)
         Route::get('/','send');
     });
 
+
+Route::controller(ReportController::class)
+    ->prefix('Report')->middleware('auth:sanctum') ->group(function (){
+        Route::get('show','Report');
+    });
 //test
 Route::get('test', function (){
 
 });
+// routes/api.php
+
+
+
+

@@ -25,9 +25,9 @@ class Medicine extends Model
      * @var array<int, string>
      */
     protected $hidden = [
-        'created_at',
-        'updated_at'
-    ];
+    'created_at',
+    'updated_at'
+];
 
     //relations methods
     public function category(): BelongsTo
@@ -45,10 +45,10 @@ class Medicine extends Model
         return $this->hasMany(FavoritMedicine::class);
     }
 
-//    public function orders(): HasMany
-//    {
-//        return $this->hasMany(Order::class);
-//    }
+    public function orders(): HasMany
+   {
+       return $this->hasMany(Order::class);
+   }
 
    public function carts(): HasMany
    {

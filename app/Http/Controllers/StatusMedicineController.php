@@ -45,7 +45,8 @@ class StatusMedicineController extends Controller
         $statusMedicine = StatusMedicine::create([
             'medicine_id' => $medicine->id,
             'quantity' => $validatedDAta['quantity'],
-            'expiration_date' => $validatedDAta['expiration_date']
+            'expiration_date' => $validatedDAta['expiration_date'],
+             'report_quantity' =>  $validatedDAta['quantity']
         ]) ;
 
         $medicine->update([
@@ -102,6 +103,15 @@ class StatusMedicineController extends Controller
      */
     public function destroy(StatusMedicine $statusMedicine)
     {
+
+
+        $expiredRecords = StatusMedicine::where('expiration_date', '<', now())->get();
+
+        foreach ($expiredRecords as $record) {
+            $record->delete();
+        }
+
+        return response()->json(['message' => 'Expired records deleted successfully']);
 
     }
 }
