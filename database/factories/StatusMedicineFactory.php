@@ -19,7 +19,8 @@ class StatusMedicineFactory extends Factory
     {
         return [
             'expiration_date' => fake()->date(),
-            'quantity' => fake()->numberBetween(0, 100)
+            'quantity' => fake()->numberBetween(0, 100),
+            'report_quantity'=> fake()->numberBetween(0, 100)
         ];
     }
 }
